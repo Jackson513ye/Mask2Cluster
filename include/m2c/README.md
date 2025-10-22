@@ -9,4 +9,7 @@ Core algorithm conventions to honor in forthcoming headers:
 - Validate clusters via minimum/maximum point counts and bounding diameter before accepting the first qualifying cluster.
 - Optionally support voxel downsampling through a `voxel` parameter, using `pcl::VoxelGrid` when enabled.
 
+Current placeholder declarations:
+- `types.h` exposes the shared point type aliases, the pose wrapper holding reference point C, and configuration parameters used to steer clustering.
+
 The header files added in this stage are placeholders only; implementations and full interfaces will be introduced in later milestones.

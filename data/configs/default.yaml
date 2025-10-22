@@ -1,0 +1,15 @@
+# Default configuration for mask2cluster (skeleton only)
+cluster:
+  eps: 0.35            # meters
+  minPts_core: 8
+  minPts_total: 60
+  maxDiameter: 1.5     # meters
+  maxPts: 500000
+  max_trials: 100
+  voxel: 0.05          # meters; set 0 to disable
+io:
+  input_format_priority:
+    - las
+    - ply
+    - pcd
+  pose_key: translation

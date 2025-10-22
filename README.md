@@ -8,7 +8,7 @@ This repository currently ships only the project skeleton. No algorithms or comp
 
 ## Input / Output
 
-- `--in <path.las>`: masked point cloud 1. `.ply` and `.pcd` are temporarily acceptable fallbacks when LAS support is unavailable.
+- `--in <path.las>`: masked point cloud 1. The loader prefers `.las` when PDAL is enabled; if unavailable it falls back to `.ply`/`.pcd` via PCL IO.
 - `--pose <pose.json>`: pose file; only `translation.x/y/z` are used to derive reference point C.
 - `--out <cluster.ply>`: writes the first qualifying cluster found by the seeded DBSCAN search.
 
@@ -31,6 +31,11 @@ This repository currently ships only the project skeleton. No algorithms or comp
 - [Point Cloud Library (PCL)](https://pointclouds.org/)
 - [Eigen](https://eigen.tuxfamily.org/)
 - [PDAL](https://pdal.io/) for LAS ingestion (optional but preferred)
+- [nlohmann/json](https://github.com/nlohmann/json) header-only parser for `pose.json`
+
+## Build
+
+This milestone only configures the CMake scaffolding—no executables or libraries are generated. After configuring with CMake you will find placeholder targets disabled via `M2C_ENABLE_BUILD`. Future milestones will progressively enable actual build products once interfaces and implementations land.
 
 ## Directory Layout
 
@@ -51,14 +56,9 @@ This repository currently ships only the project skeleton. No algorithms or comp
 
 ## Configuration Stub
 
-Editable defaults live in `data/configs/default.ymal` with placeholders for the following parameters:
-- `eps`
-- `minPts_core`
-- `minPts_total`
-- `maxDiameter`
-- `maxPts`
-- `max_trials`
-- `voxel`
+Editable defaults live in `data/configs/default.yaml` (currently set to `eps=0.35`, `minPts_core=8`, `minPts_total=60`, `maxDiameter=1.5`, `maxPts=500000`, `max_trials=100`, `voxel=0.05`).
+
+Runtime precedence will be: CLI flags → YAML configuration → compiled-in defaults. Future milestones will load the YAML via `yaml-cpp` (or a lightweight in-house parser) inside the `apps/` layer before handing parameters to the pipeline.
 
 ## Next Steps
 
