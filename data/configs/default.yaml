@@ -1,15 +1,46 @@
-# Default configuration for mask2cluster (skeleton only)
+## Default configuration for mask2cluster
+## Notes:
+## - The current pipeline is FEC-based (Fast Euclidean Clustering).
+## - Some legacy parameters from the earlier seeded-DBSCAN flow remain for compatibility; they are marked as legacy.
+## - Units are meters unless noted otherwise.
+
 cluster:
-  eps: 0.35            # meters
+  # FEC radius (Euclidean tolerance). Larger eps merges more points/clusters; smaller eps splits them.
+  eps: 0.1
+
+  # Legacy: core density threshold for seeded-DBSCAN expansion (not used by FEC pipeline).
   minPts_core: 8
+
+  # Minimum accepted cluster size at the final validation stage.
+  # With FEC, a separate dynamic threshold floor(n * mean_cluster_size) is also applied earlier.
   minPts_total: 60
-  maxDiameter: 1.5     # meters
-  maxPts: 500000
+
+  # Maximum allowed diameter of the selected cluster, measured via an axis-aligned bounding box.
+  maxDiameter: 1.5
+
+  # Safety cap to prevent runaway growth in legacy DBSCAN (not used by FEC pipeline).
+  maxPts: 50000
+
+  # Legacy: maximum seed iterations for seeded-DBSCAN search (not used by FEC pipeline).
   max_trials: 100
-  voxel: 0.05          # meters; set 0 to disable
+
+  # Optional voxel downsampling leaf size. Set to 0 to disable downsampling.
+  voxel: 0.05
+
+  # Dynamic size filter factor for FEC results.
+  # Let k = mean cluster size (over all FEC labels). Clusters with size < floor(n * k) are discarded.
+  n: 0.25
+
+  # Voting sample size near the reference point C.
+  # Among all points from the kept clusters, take the m nearest to C and pick the cluster with the most votes.
+  m: 100
+
 io:
+  # File format preference order for input point clouds. LAS is preferred when PDAL is available.
   input_format_priority:
     - las
     - ply
     - pcd
+
+  # JSON key holding the translation vector used to define reference point C: translation.x/y/z.
   pose_key: translation

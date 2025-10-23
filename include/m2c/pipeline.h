@@ -12,9 +12,9 @@ struct Result {
 	Cluster cluster;     // Captured cluster (valid when found == true).
 };
 
-// Orchestrate seeded cluster selection around reference point C.
-// Points are processed in ascending distance to C, with soft bans preventing reuse of failed clusters.
-// Iteration halts once a cluster passes validation or the max_trials limit is reached.
+// Orchestrate FEC-based cluster selection around reference point C.
+// Steps: run FEC with radius `eps`, discard clusters smaller than floor(n * mean_size),
+// then select the cluster that has majority among the `m` nearest-to-C points (ties broken by total distance).
 Result selectCluster(const CloudT& cloud, const Pose& pose, const Params& params);
 
 }  // namespace m2c

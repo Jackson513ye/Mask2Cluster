@@ -21,6 +21,9 @@ struct Params {
 	int maxPts;         // Safety cap on processed points per cloud.
 	int max_trials;     // Maximum number of seed attempts before aborting.
 	float voxel;        // Optional voxel grid size; zero disables downsampling.
+	// FEC-based selection parameters
+	float n;            // Fraction multiplier for mean cluster size: floor(n * mean_size).
+	int m;              // Top-M nearest points to C for voting among clusters.
 };
 
 }  // namespace m2c
